@@ -7,5 +7,5 @@ docker buildx install
 docker build \
     --platform linux/amd64,linux/arm64 \
     --push \
-    --file 20.04/Dockerfile
+    --file 20.04/Dockerfile \
     -t ${DOCKERIMAGE} .
