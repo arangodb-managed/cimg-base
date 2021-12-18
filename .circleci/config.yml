@@ -1,7 +1,8 @@
 version: 2.1
 jobs:
   build:
-    machine: true
+    docker: 
+    - image: cimg/base
     steps:
       - checkout
       - run: ./build-images.sh
