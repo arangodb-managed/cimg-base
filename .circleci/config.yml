@@ -1,11 +1,9 @@
 version: 2.1
 jobs:
   build:
-    docker:
-    - image: cibuilds/docker:19.03
+    machine: true
     steps:
       - checkout
-      - setup_remote_docker
       - run: ./build-images.sh
 
 workflows:
