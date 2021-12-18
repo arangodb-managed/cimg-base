@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 DOCKERIMAGE=arangodboasis/cimg-base:${CIRCLE_TAG:-$CIRCLE_BRANCH-$CIRCLE_SHA1}"}
+echo Building ${DOCKERIMAGE}
 
 docker buildx install
 docker build \
