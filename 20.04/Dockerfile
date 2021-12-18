@@ -19,6 +19,8 @@ RUN echo 'APT::Get::Assume-Yes "true";' > /etc/apt/apt.conf.d/90circleci && \
 	echo 'DPkg::Options "--force-confnew";' >> /etc/apt/apt.conf.d/90circleci && \
 	apt-get update && apt-get install -y \
 		apt-utils \
+	&& \
+	apt-get install -y \
 		curl \
 		locales \
 		sudo \
