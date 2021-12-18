@@ -13,7 +13,7 @@ jobs:
       - run: chmod a+x ~/.docker/cli-plugins/docker-buildx
       - run: docker buildx version
       - run: docker context create cictx
-      - run: docker buildx create cictx --use
+      - run: docker buildx create cictx --platform linux/amd64,linux/arm64 --use
       - run: docker buildx ls
       - run: ./build-images.sh
 
