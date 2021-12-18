@@ -12,7 +12,8 @@ jobs:
       - run: curl --silent -L --output ~/.docker/cli-plugins/docker-buildx https://github.com/docker/buildx/releases/download/v0.7.1/buildx-v0.7.1.linux-amd64
       - run: chmod a+x ~/.docker/cli-plugins/docker-buildx
       - run: docker buildx version
-      - run: docker buildx create --use
+      - run: docker context create cictx
+      - run: docker buildx create cictx --use
       - run: ./build-images.sh
 
 workflows:
