@@ -2,6 +2,12 @@
 
 FROM ubuntu:20.04
 
+# Oasis added begin
+ARG TARGETPLATFORM
+ARG TARGETARCH
+ENV ARCH=${TARGETARCH/aarch64/arm64}
+# Oasis added end
+
 LABEL maintainer="Community & Partner Engineering Team <community-partner@circleci.com>"
 
 # Change default shell for RUN from Dash to Bash
@@ -29,11 +35,11 @@ RUN echo 'APT::Get::Assume-Yes "true";' > /etc/apt/apt.conf.d/90circleci && \
 	# Source repo: https://github.com/jwilder/dockerize
 	# I (Ricardo) would like to replace this one day. It's a tool not really
 	# maintained and we can likely offer something better.
-	curl -sSL --fail --retry 3 --output /tmp/dockerize-linux-amd64.tar.gz "https://circle-downloads.s3.amazonaws.com/circleci-images/cache/linux-amd64/dockerize-latest.tar.gz" && \
-	tar -C /usr/local/bin -xzvf /tmp/dockerize-linux-amd64.tar.gz && \
-	rm -rf /tmp/dockerize-linux-amd64.tar.gz && \
+	#curl -sSL --fail --retry 3 --output /tmp/dockerize-linux-amd64.tar.gz "https://circle-downloads.s3.amazonaws.com/circleci-images/cache/linux-amd64/dockerize-latest.tar.gz" && \
+	#tar -C /usr/local/bin -xzvf /tmp/dockerize-linux-amd64.tar.gz && \
+	#rm -rf /tmp/dockerize-linux-amd64.tar.gz && \
 	# Quick test of Dockerize
-	dockerize --version
+	#dockerize --version
 
 ENV PATH=/home/circleci/bin:/home/circleci/.local/bin:$PATH \
 	LANG=en_US.UTF-8 \
@@ -90,7 +96,7 @@ RUN apt-get update && apt-get install -y \
 		gnupg-agent \
 		software-properties-common && \
 	curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add - && \
-	add-apt-repository -y "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" && \
+	add-apt-repository -y "deb [arch=${ARCH}] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" && \
 	apt-get install -y docker-ce=${DOCKER_VERSION}$(lsb_release -cs) docker-ce-cli=${DOCKER_VERSION}$(lsb_release -cs) containerd.io && \
 	# Quick test of the Docker install
 	docker --version && \
@@ -105,9 +111,9 @@ RUN dockerPluginDir=/usr/local/lib/docker/cli-plugins && \
 	# Quick test of the Docker Compose install
 	docker compose version
 
-RUN curl -sSL "https://github.com/mikefarah/yq/releases/download/v4.13.3/yq_linux_amd64.tar.gz" | \
+RUN curl -sSL "https://github.com/mikefarah/yq/releases/download/v4.13.3/yq_linux_${ARCH}.tar.gz" | \
 	tar -xz -C /usr/local/bin && \
-	mv /usr/local/bin/yq{_linux_amd64,}
+	mv /usr/local/bin/yq{_linux_${ARCH},}
 
 USER circleci
 
