@@ -7,6 +7,7 @@ jobs:
       - checkout
       - setup_remote_docker:
           version: 18.09.3
+      - run: apk add make curl bash
       - run: ./build-images.sh
 
 workflows:
