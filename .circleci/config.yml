@@ -12,6 +12,7 @@ jobs:
       - run: mkdir -vp ~/.docker/cli-plugins/
       - run: curl --silent -L --output ~/.docker/cli-plugins/docker-buildx https://github.com/docker/buildx/releases/download/v0.7.1/buildx-v0.7.1.linux-amd64
       - run: chmod a+x ~/.docker/cli-plugins/docker-buildx
+      - run: docker run --rm --privileged tonistiigi/binfmt:latest --install "$BUILDX_PLATFORMS"
       - run: docker buildx version
       - run: docker context create cictx
       - run: docker buildx create cictx --platform linux/amd64,linux/arm64 --use
