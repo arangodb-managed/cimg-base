@@ -5,6 +5,7 @@ jobs:
     - image: cimg/base:2021.10
     steps:
       - checkout
+      - setup_remote_docker
       - run: ./build-images.sh
 
 workflows:
