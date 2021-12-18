@@ -5,7 +5,6 @@ FROM ubuntu:20.04
 # Oasis added begin
 ARG TARGETPLATFORM
 ARG TARGETARCH
-ENV ARCH=${TARGETARCH/aarch64/arm64}
 # Oasis added end
 
 LABEL maintainer="Community & Partner Engineering Team <community-partner@circleci.com>"
@@ -96,7 +95,7 @@ RUN apt-get update && apt-get install -y \
 		gnupg-agent \
 		software-properties-common && \
 	curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add - && \
-	add-apt-repository -y "deb [arch=${ARCH}] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" && \
+	add-apt-repository -y "deb [arch=${TARGETARCH/aarch64/arm64}] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" && \
 	apt-get install -y docker-ce=${DOCKER_VERSION}$(lsb_release -cs) docker-ce-cli=${DOCKER_VERSION}$(lsb_release -cs) containerd.io && \
 	# Quick test of the Docker install
 	docker --version && \
@@ -111,9 +110,9 @@ RUN dockerPluginDir=/usr/local/lib/docker/cli-plugins && \
 	# Quick test of the Docker Compose install
 	docker compose version
 
-RUN curl -sSL "https://github.com/mikefarah/yq/releases/download/v4.13.3/yq_linux_${ARCH}.tar.gz" | \
+RUN curl -sSL "https://github.com/mikefarah/yq/releases/download/v4.13.3/yq_linux_${TARGETARCH/aarch64/arm64}.tar.gz" | \
 	tar -xz -C /usr/local/bin && \
-	mv /usr/local/bin/yq{_linux_${ARCH},}
+	mv /usr/local/bin/yq{_linux_${TARGETARCH/aarch64/arm64},}
 
 USER circleci
 
