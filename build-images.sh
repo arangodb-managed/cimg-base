@@ -5,7 +5,7 @@ echo Building ${DOCKERIMAGE}
 
 if [ "$1" = "latest" ]; then
     regctl image copy ${DOCKERIMAGE} arangodboasis/cimg-base:latest
-elif
+else
     docker buildx install
     docker build \
         --platform linux/amd64,linux/arm64 \
