@@ -4,7 +4,7 @@ DOCKERIMAGE=arangodboasis/cimg-base:${CIRCLE_TAG:-$CIRCLE_BRANCH-$CIRCLE_SHA1}
 echo Building ${DOCKERIMAGE}
 
 if [ "$1" = "latest" ]; then
-    ./regctl image copy ${DOCKERIMAGE} arangodboasis/cimg-base:latest
+    ~/regctl image copy ${DOCKERIMAGE} arangodboasis/cimg-base:latest
 else
     docker buildx install
     docker build \

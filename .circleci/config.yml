@@ -46,7 +46,7 @@ workflows:
           context: arangodboasis
           filters:
             tags:
-              only: /.*/
+              ignore: /.*/
       - build:
           context: arangodboasis
           push_release: true
