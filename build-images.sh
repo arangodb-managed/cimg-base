@@ -1,4 +1,11 @@
 #!/usr/bin/env bash
 
-docker build --file 18.04/Dockerfile -t cimg/base:18.04 .
-docker build --file 20.04/Dockerfile -t cimg/base:20.04 .
+DOCKERIMAGE=arangodboasis/cimg-base:${CIRCLE_TAG:-$CIRCLE_BRANCH-$CIRCLE_SHA1}
+echo Building ${DOCKERIMAGE}
+
+docker buildx install
+docker build \
+    --platform linux/amd64,linux/arm64 \
+    --push \
+    --file 20.04/Dockerfile \
+    -t ${DOCKERIMAGE} .
