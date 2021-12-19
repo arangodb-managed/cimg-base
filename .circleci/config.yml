@@ -1,6 +1,10 @@
 version: 2.1
 jobs:
   build:
+    parameters:
+      push_release:
+        type: boolean
+        default: false
     machine:
       image: ubuntu-1604:202007-01
     environment:
@@ -11,6 +15,8 @@ jobs:
       - run: mkdir -vp ~/.docker/cli-plugins/
       - run: curl --silent -L --output ~/.docker/cli-plugins/docker-buildx https://github.com/docker/buildx/releases/download/v0.7.1/buildx-v0.7.1.linux-amd64
       - run: chmod a+x ~/.docker/cli-plugins/docker-buildx
+      - run: curl --silent -L --output ~/regctl https://github.com/regclient/regclient/releases/download/v0.3.9/regctl-linux-amd64
+      - run: chmod a+x ~/regctl
       - run: docker run --rm --privileged tonistiigi/binfmt:latest --install "$BUILDX_PLATFORMS"
       - run: docker buildx version
       - run: docker context create cictx
@@ -18,6 +24,13 @@ jobs:
       - run: docker buildx ls
       - run: echo "$DOCKER_REGISTRY_PASSWORD" | base64 -d | docker login -u "$DOCKER_REGISTRY_USER" --password-stdin "$DOCKER_REGISTRY_HOST"
       - run: ./build-images.sh
+      - when:
+          condition: <<parameters.push_release>>
+          steps:
+            - deploy:
+                name: Push docker image
+                command: |
+                  ./build-images.sh latest
       - slack/notify:
           event: fail
           template: basic_fail_1
