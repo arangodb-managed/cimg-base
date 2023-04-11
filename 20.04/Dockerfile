@@ -74,6 +74,8 @@ RUN apt-get update && apt-get install -y \
 		pkg-config \
 		postgresql-client \
 		software-properties-common \
+		# for ML
+		python3-pip \
 		# already installed but hear for consistency
 		sudo \
 		tar \
